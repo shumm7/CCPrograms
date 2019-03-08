@@ -24,3 +24,12 @@ Tinkers' ConstructのSmelteryから金属を自動で型に流し、回収する
 
 ## computer.othello
 隣接するAdvanced Monitorにオセロを表示する。
+
+## github
+GitHub上の指定したレポジトリから、ファイルをダウンロードし、実行する。
+また、これらのAPIも提供する。`repository url`は`https://github.com/username/project.git` か `https://github.com/username/project`の形式。  
+
+`github get <repository url> <branch name> <directory> <filename>`  
+`github run <repository url> <branch name> <directory> <arguments>`  
+`get(repository_url, branch_name, directory, filename)`  
+`run(repository_url, branch_name, directory, argument1, argument2 ...)`  
