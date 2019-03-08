@@ -1,17 +1,6 @@
 value = {...}
 side = value[1]
 
-TURN_CURRENT = math.random(2)-1
-TURN_OPPOS = oppos(TURN_CURRENT)
-NONE = -1
-WHITE = 0
-BLACK = 1
-
-board = {}
-direction = {}
-
-mon = peripheral.wrap(side)
-
 -------------------------------------------------------------------------------
 --                                 Function                                  --
 -------------------------------------------------------------------------------
@@ -58,6 +47,18 @@ function oppos(bin)
 		return nil
 	end
 end
+
+-------------------------------------------------------------------------------
+TURN_CURRENT = math.random(2)-1
+TURN_OPPOS = oppos(TURN_CURRENT)
+NONE = -1
+WHITE = 0
+BLACK = 1
+
+board = {}
+direction = {}
+
+mon = peripheral.wrap(side)
 -------------------------------------------------------------------------------
 --BOARD SETUP
 function boardReset()
