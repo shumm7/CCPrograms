@@ -54,6 +54,7 @@ TURN_OPPOS = oppos(TURN_CURRENT)
 NONE = -1
 WHITE = 0
 BLACK = 1
+PASSFLAG = 0
 
 board = {}
 direction = {}
@@ -70,10 +71,14 @@ function boardReset()
 		end
 	end
 
-	board[4][4] = WHITE
-	board[5][4] = BLACK
+	--board[4][4] = WHITE
+	--board[5][4] = BLACK
+	--board[4][5] = BLACK
+	--board[5][5] = WHITE
+	board[4][8] = BLACK
+	board[4][7] = BLACK
+	board[4][6] = WHITE
 	board[4][5] = BLACK
-	board[5][5] = WHITE
 end
 
 function boardCount()
@@ -317,6 +322,26 @@ function boardDraw(turn)
 	mon.setTextColor(colors.white)
 	mon.setCursorPos(10,8)
 	mon.write("RES")
+	if PASSFLAG > 0 then
+		mon.setCursorPos(11,3)
+		mon.write("P")
+		mon.setCursorPos(11,4)
+		mon.write("A")
+		mon.setCursorPos(11,5)
+		mon.write("S")
+		mon.setCursorPos(11,6)
+		mon.write("S")
+	else
+		mon.setCursorPos(11,3)
+		mon.write(" ")
+		mon.setCursorPos(11,4)
+		mon.write(" ")
+		mon.setCursorPos(11,5)
+		mon.write(" ")
+		mon.setCursorPos(11,6)
+		mon.write(" ")
+	end
+
 
 
 	mon.setCursorPos(1,1)
@@ -325,8 +350,10 @@ end
 function getTouchPos()
 	local void, nm, x, y = os.pullEvent("monitor_touch")
 	if x>1 and x<10 and y>0 and y<9 then
+		--BOARD
 		return x-1, y
 	elseif x>9 and x<13 and y==8 then
+		--RES
 		return -1,-1
 	else
 		return 0, 0
@@ -356,6 +383,7 @@ boardDraw(TURN_CURRENT)
 
 while 1 do
 	local tx, ty = getTouchPos()
+	print(tx..":"..ty.."("..placableCnt(TURN_CURRENT)..")"..PASSFLAG)
 
 	if tx==-1 or ty==-1 then
 		acls()
@@ -364,18 +392,32 @@ while 1 do
 		TURN_CURRENT = math.random(2)-1
 		TURN_OPPOS = oppos(TURN_CURRENT)
 		boardDraw(TURN_CURRENT)
+		PASSFLAG = 0
 	else
 		if canPlace(tx,ty,TURN_CURRENT)==true then
 			boardPlace(tx,ty,TURN_CURRENT)
 			TURN_CURRENT = oppos(TURN_CURRENT)
 			TURN_OPPOS = oppos(TURN_CURRENT)
+			PASSFLAG = 0
 			boardDraw(TURN_CURRENT)
 			sleep(0.2)
 		end
 	end
 
-	if placableCnt(TURN_CURRENT)==0 or placableCnt(oppos(TURN_CURRENT))==0 then
-		sleep(2)
+	if placableCnt(TURN_CURRENT)==0 and placableCnt(oppos(TURN_CURRENT))~=0 then
+		PASSFLAG = PASSFLAG + 1
+		TURN_CURRENT = oppos(TURN_CURRENT)
+		sleep(0.2)
+		boardDraw(TURN_CURRENT)
+	elseif placableCnt(TURN_CURRENT)==0 and placableCnt(oppos(TURN_CURRENT))==0 then
+		PASSFLAG = 2
+		sleep(0.2)
+	else
+		PASSFLAG = 0
+	end
+
+	if PASSFLAG >= 2 then
+		sleep(1)
 		mon.setBackgroundColor(colors.gray)
 		acls()
 		mon.setCursorPos(1,2)
@@ -392,6 +434,7 @@ while 1 do
 			mon.write(" DRAW")
 		end
 
+		PASSFLAG = 0
 		sleep(2)
 		acls()
 		sleep(1)
