@@ -24,7 +24,7 @@ Tinkers' ConstructのSmelteryから金属を自動で型に流し、回収する
 
 ## computer.othello
 隣接するAdvanced Monitorにオセロを表示する。
-引数に`side`を指定する。
+引数に`side`を指定する。  
 
 ## github
 GitHub上の指定したレポジトリから、ファイルをダウンロードし、実行する。  
