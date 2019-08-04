@@ -47,3 +47,8 @@ GitHub上の指定したレポジトリから、ファイルをダウンロー�
 `saveString("string", "path")` 文字列を`path`に保存する。  
 `download("url", "filename", "mode(a/w)")` 指定したURLからデータを取得し、`filename`に保存する。`mode`は`a`（上書きしない）か`w`（上書きする）を指定。  
 `run("url", <arguments>...)` 指定したURLのプログラムを実行。引数は可変長。  
+
+## CCWeather
+天気情報を取得する。  
+詳細はCCWeather/README.mdを参照。  
+
